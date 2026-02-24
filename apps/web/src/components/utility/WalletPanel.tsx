@@ -126,15 +126,8 @@ function WalletOptions() {
             {wallets.map((w, index) => (
                 <button
                     key={index}
-                    onClick={async () => {
-                        try {
-                            console.log(w);
-                            select(w.adapter.name); // wait for selection
-                            console.log("select passed: ", select);
-                            await connect();              // then open popup
-                        } catch (err) {
-                            console.error("Wallet connection failed:", err);
-                        }
+                    onClick={() => {
+                        select(w.adapter.name);
                     }}
                     className={cn(
                         'w-full text-left py-2 px-3 rounded-md hover:bg-[#1c1c1c] transition duration-200 ease-in-out cursor-pointer',

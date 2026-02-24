@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "uvicorn backend:app --reload --port 8000"
+    "dev": "venv/bin/python -m uvicorn backend:app --reload --port 8000"
   }
 }

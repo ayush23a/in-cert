@@ -21,6 +21,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+@app.get("/")
+def root():
+    return {
+        "message": "Server is running" ,
+        "description": "Welcome to in-cert, a platform to check, verify forged certificates and create new encrypted certificates"
+    }
+
 @app.post("/analyze", response_class=PlainTextResponse)
 async def analyze(
     test_file: UploadFile = File(...),
