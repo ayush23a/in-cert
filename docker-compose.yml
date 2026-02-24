@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: incert-db
+    environment:
+      POSTGRES_USER: incert_user
+      POSTGRES_PASSWORD: incert_password
+      POSTGRES_DB: incert
+    ports:
+      - "5432:5432"
+    volumes:
+      - incert-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  incert-db-data:

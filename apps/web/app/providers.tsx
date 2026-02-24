@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { clusterApiUrl } from '@solana/web3.js';
 import {
@@ -11,8 +11,14 @@ import {
 import { ContractProvider } from './contract';
 
 export default function Providers({ children }: { children: ReactNode }) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     // use mainnet
-    const endpoint = clusterApiUrl('devnet'); // or "mainnet-beta"
+    const endpoint = useMemo(() => clusterApiUrl('devnet'), []); // or "mainnet-beta"
 
     const wallets = useMemo(
         () => [
@@ -22,6 +28,12 @@ export default function Providers({ children }: { children: ReactNode }) {
         ],
         [],
     );
+
+    // Prevent SSR rendering of wallet providers to avoid hydration mismatches
+    // WalletProvider accesses `window` internally, which doesn't exist during SSR
+    if (!mounted) {
+        return null;
+    }
 
     return (
         <ConnectionProvider endpoint={endpoint}>
